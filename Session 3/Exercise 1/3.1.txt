@@ -1,0 +1,40 @@
+
+CodeU Session 3
+
+Exercise 1:
+
+//stores previous words that have been looked up
+HashTable<String, Boolean> data = new HashTable<String, Boolean>();
+
+//thoughts — another good implementation is probably to store all the 
+//words that i go through for wordAt in the hashtable
+
+boolean isInDictionary(String input) {
+	//check to see if the word has been looked up before
+	if (data.get(input)) {
+		return true;
+	}
+
+	else {
+		int i = 0;
+		boolean flag = 1;
+		
+		//keep looping until you see the word or the index is out
+		//of range for the Trivial Dictionary
+		while (flag) {
+			if (TrivialDictionary.wordAt(i).equals(input){
+				data.put(input, true);
+				return true;
+			}
+			
+			i++
+			
+			if (TrivialDictionary.wordAt(i) == NULL){
+				flag = 0;
+			}
+
+		}
+
+		return false;
+	}
+}

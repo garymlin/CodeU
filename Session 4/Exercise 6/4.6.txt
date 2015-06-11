@@ -1,0 +1,87 @@
+
+
+CodeU Session 4
+
+
+Exercise 6:
+
+
+ArrayList<String> boggle (String[][] input) {
+	ArrayList<String> output = new ArrayList<String>();
+	
+	//go through all the possible starting spots
+	for (int i = 0 ; i < 4 ; i++) {
+		for (int j = 0 ; j < 4 ; j++) {
+			//concatenated row+column to remember where I’ve been
+			Hashtable<String,Boolean> table = new Hashtable<String, Boolean>();
+			String curr = “”;
+			ArrayList<String> mid = new ArrayList<String>();
+			
+			//recurse on each starting spot
+			output.addAll(recurse(input, table, i, j, curr, mid));
+		}
+	}
+
+	return output;
+}
+
+
+//goes through al the possible traversals with the given starting spot
+//checks if each combination is a word or not
+ArrayList<String> recurse(String[][] input, Hashtable<String, Boolean> table, int i, int j, String curr, ArrayList<String> mid) {
+	
+	//base cases for the bounds of the board
+	//and if you’ve been to the spot already
+	if (i > (input.length - 1) || j > (input.length - 1)){
+		return mid;
+	}
+	if (i < 0 || j < 0) {
+		return mid;
+	}
+
+	String coor = i + “” + j;
+	if (table.containsKey(coor){
+		return mid;
+	}
+	
+
+	//log the coordinate and add the letter to the string
+	table.put(coor, true);
+	curr += input[i][j];
+	
+	//add to the hashtable
+	if (inDictinoary(curr)){
+		mid.add(curr);
+	}
+
+	//recurse in all the directions
+	//up
+	mid = recurse(input, table, i, j + 1, curr, mid);
+
+	//down
+	mid = recurse(input, table, i, j - 1, curr, mid);
+
+	//left
+	mid = recurse(input, table, i - 1, j, curr, mid);
+
+	//right
+	mid = recurse(input, table, i + 1, j, curr, mid);
+
+	//up/left
+	mid = recurse(input, table, i - 1, j + 1, curr, mid);
+
+	//up/right
+	mid = recurse(input, table, i + 1, j + 1, curr, mid);
+
+	//down/left
+	mid = recurse(input, table, i - 1, j - 1, curr, mid);
+
+	//down/right
+	mid = recurse(input, table, i + 1, j - 1, curr, mid);
+
+	return mid;
+}
+	
+	
+//given dictionary interface
+boolean inDictionary (String input);

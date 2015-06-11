@@ -1,0 +1,63 @@
+
+
+CodeU Session 4
+
+Exercise 1:
+
+
+boolean palindrome (String input) {
+
+	//beginning and end pointers
+	int beg = 0;
+	int end = input.length()
+	char[] array = input.toCharArray();
+
+	//keep looping till end is pointing to where beginning is pointing
+	//or when beginning is past end
+	while (end > beg) {
+		if (array[beg] != array[end]) {	
+			return false;
+		}
+		end--;
+		beg++;
+	}
+	
+	return true;
+}
+
+
+int palindromeBits (int k) {
+	int number = -1;
+	int count = 0;
+
+	//until the k’th case is hit
+	while (count != k) {
+		//only odd numbers can be palindromes since i’m chopping
+		//off leading 0’s so it can only start with 1
+		number += 2;
+		String binaryString = binary(number);
+		if (palindrome(binaryString)){
+			count++;
+		}
+		
+	}
+
+
+	return number;
+}
+	
+//converts int to its binary as a String
+String binary (int n) {
+	if (n == 0) {
+		return “0”;
+	}
+	
+	String binary = “”;
+	while (n > 0) {
+		int remainder = n % 2;
+		binary = remainder + binary;
+		n = n / 2;
+	}
+	
+	return binary;
+}

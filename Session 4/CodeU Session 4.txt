@@ -1,0 +1,199 @@
+
+
+CodeU Session 4
+
+
+
+Exercise 1:
+
+
+boolean palindrome (String input) {
+
+	//beginning and end pointers
+	int beg = 0;
+	int end = input.length()
+	char[] array = input.toCharArray();
+
+	//keep looping till end is pointing to where beginning is pointing
+	//or when beginning is past end
+	while (end > beg) {
+		if (array[beg] != array[end]) {	
+			return false;
+		}
+		end--;
+		beg++;
+	}
+	
+	return true;
+}
+
+
+int palindromeBits (int k) {
+	int number = -1;
+	int count = 0;
+
+	//until the k’th case is hit
+	while (count != k) {
+		//only odd numbers can be palindromes since i’m chopping
+		//off leading 0’s so it can only start with 1
+		number += 2;
+		String binaryString = binary(number);
+		if (palindrome(binaryString)){
+			count++;
+		}
+		
+	}
+
+
+	return number;
+}
+	
+//converts int to its binary as a String
+String binary (int n) {
+	if (n == 0) {
+		return “0”;
+	}
+	
+	String binary = “”;
+	while (n > 0) {
+		int remainder = n % 2;
+		binary = remainder + binary;
+		n = n / 2;
+	}
+	
+	return binary;
+}
+
+
+
+Exercise 2:
+
+//same as above
+boolean palindrome (String input) {
+
+	int beg = 0;
+	int end = input.length()
+	char[] array = input.toCharArray();
+
+	while (end > beg) {
+		if (array[beg] != array[end]) {	
+			return false;
+		}
+		end--;
+		beg++;
+	}
+	
+	return true;
+}
+
+
+ArrayList<Integer> palindromeString (String input) {
+	
+	//index 0 —> index that palindrome begins at
+	//index 1 —> length of the longest palindrome
+	ArrayList<Integer> output = new ArrayList<Integer();
+	
+	//goes through every letter in the string
+	for (int i = 0 ; i < input.length(); i++) {
+		//starts from one letter after the one the previous for
+		//loop is looking at
+		for (int j = i + 1; j < input.length(); j++) {
+			//creates a substring and sees if it is a palindrome
+			String sub = input.substring(i, j);
+			if (palindrome(sub)){
+
+				//logs it if the palindrome is longer
+				if ((j-i) > output.get(1)){
+					
+					//reset the output	
+					output.set(0, i);
+					output.set(1, j-i);
+				}
+			}
+		}
+	}
+}
+
+
+Exercise 6:
+
+
+ArrayList<String> boggle (String[][] input) {
+	ArrayList<String> output = new ArrayList<String>();
+	
+	//go through all the possible starting spots
+	for (int i = 0 ; i < 4 ; i++) {
+		for (int j = 0 ; j < 4 ; j++) {
+			//concatenated row+column to remember where I’ve been
+			Hashtable<String,Boolean> table = new Hashtable<String, Boolean>();
+			String curr = “”;
+			ArrayList<String> mid = new ArrayList<String>();
+			
+			//recurse on each starting spot
+			output.addAll(recurse(input, table, i, j, curr, mid));
+		}
+	}
+
+	return output;
+}
+
+
+//goes through al the possible traversals with the given starting spot
+//checks if each combination is a word or not
+ArrayList<String> recurse(String[][] input, Hashtable<String, Boolean> table, int i, int j, String curr, ArrayList<String> mid) {
+	
+	//base cases for the bounds of the board
+	//and if you’ve been to the spot already
+	if (i > (input.length - 1) || j > (input.length - 1)){
+		return mid;
+	}
+	if (i < 0 || j < 0) {
+		return mid;
+	}
+
+	String coor = i + “” + j;
+	if (table.containsKey(coor){
+		return mid;
+	}
+	
+
+	//log the coordinate and add the letter to the string
+	table.put(coor, true);
+	curr += input[i][j];
+	
+	//add to the hashtable
+	if (inDictinoary(curr)){
+		mid.add(curr);
+	}
+
+	//recurse in all the directions
+	//up
+	mid = recurse(input, table, i, j + 1, curr, mid);
+
+	//down
+	mid = recurse(input, table, i, j - 1, curr, mid);
+
+	//left
+	mid = recurse(input, table, i - 1, j, curr, mid);
+
+	//right
+	mid = recurse(input, table, i + 1, j, curr, mid);
+
+	//up/left
+	mid = recurse(input, table, i - 1, j + 1, curr, mid);
+
+	//up/right
+	mid = recurse(input, table, i + 1, j + 1, curr, mid);
+
+	//down/left
+	mid = recurse(input, table, i - 1, j - 1, curr, mid);
+
+	//down/right
+	mid = recurse(input, table, i + 1, j - 1, curr, mid);
+
+	return mid;
+}
+	
+	
+//given dictionary interface
+boolean inDictionary (String input);

@@ -1,0 +1,5 @@
+-best way to do level traversal?
+——2 queues, while (queue1 not empty and queue2 not empty)
+
+-question from bottom left to top right
+——if done recursively, lets say (1,1) can reach the endpoint 3 ways and (1,1) can be accessed by going up and right and right and up —> then won’t the recursion do the work twice for (1,1)? 

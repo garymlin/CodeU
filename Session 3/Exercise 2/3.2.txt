@@ -1,0 +1,30 @@
+
+CodeU Session 3
+
+Exercise 2:
+
+int hasMajority(ArrayList<Integer> input) {
+	//int value that constitutes a majority
+	int majority = (input.size())/2 + 1;
+	
+	//key is input, value is the number of times it has been seen
+	HashTable<Integer, Integer> data = HashTable<Integer, Integer>();
+
+	//go through the list and log the times each int has been seen
+	for (int i = 0 ; i < input.size() ; i++){
+		int val = input.get(i);
+		if (data.get(val) == NULL) {
+			data.input(val, 1);
+		}
+		else {
+			//checks if the number is a majority
+			int count = data.get(val);
+			if (count == majority - 1) {
+				return data.get(val);
+			}			
+			data.input(val, ++count);
+		}
+	}
+
+	return NULL;
+}

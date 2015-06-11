@@ -1,0 +1,52 @@
+
+
+CodeU Session 4
+
+
+Exercise 2:
+
+//same as above
+boolean palindrome (String input) {
+
+	int beg = 0;
+	int end = input.length()
+	char[] array = input.toCharArray();
+
+	while (end > beg) {
+		if (array[beg] != array[end]) {	
+			return false;
+		}
+		end--;
+		beg++;
+	}
+	
+	return true;
+}
+
+
+ArrayList<Integer> palindromeString (String input) {
+	
+	//index 0 —> index that palindrome begins at
+	//index 1 —> length of the longest palindrome
+	ArrayList<Integer> output = new ArrayList<Integer();
+	
+	//goes through every letter in the string
+	for (int i = 0 ; i < input.length(); i++) {
+		//starts from one letter after the one the previous for
+		//loop is looking at
+		for (int j = i + 1; j < input.length(); j++) {
+			//creates a substring and sees if it is a palindrome
+			String sub = input.substring(i, j);
+			if (palindrome(sub)){
+
+				//logs it if the palindrome is longer
+				if ((j-i) > output.get(1)){
+					
+					//reset the output	
+					output.set(0, i);
+					output.set(1, j-i);
+				}
+			}
+		}
+	}
+}

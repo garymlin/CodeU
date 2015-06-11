@@ -1,0 +1,86 @@
+CodeU Session 3
+
+Exercise 3:
+
+public class nth {
+
+	ArrayList<Integer> list;
+
+	nth(ArrayList<Integer> input){
+		list = input;
+	}
+
+	int nthLargest(int n) {
+		//can’t be 0th largest
+		if (n == 0) {
+			throw new RunTimeException();
+		}
+
+		//remove all the duplicates
+		ArrayList<Integer> unique = new ArrayList<Integer>();
+		HashTable<Integer, Boolean> check = new HashTable<Integer, Boolean>();
+		for (int i = 0 ; i < list.size(); i++) {
+			if (check.get(list.get(i)) == null) {
+				check.put(list.get(i), true);
+				unique.add(list.get(i);
+			}
+		}
+
+		//nth largest, cant be bigger than the size of the list
+		if (n > list.size()) {
+			throw new RunTimeException();
+		}
+
+		//quick select algorithm
+		int answer = quickselect(unique, n);
+
+		return answer;
+	}
+
+	
+	//quickselect algorithm that is based on quicksort
+	int quickselect(ArrayList<Integer> unique, int n) {
+		int r = randInt(1, unique.size());
+		int pivot = unique.get(r);
+		
+		//A1, A2 are new arraylists, where A1 has smaller elements
+		//and A2 has larger elements
+		ArrayList<Integer> A1 = new ArrayList<Integer>();
+		ArrayList<Integer> A2 = new ArrayList<Integer>();
+
+		for (int i = 0 ; i < unique.size(); i++) {
+			if (unique.get(i) < pivot) {
+				A1.add(unique.get(i);
+			}
+			
+			else if (unique.get(i) > pivot) {
+				A2.add(unique.get(i);
+			}
+			else {
+				//do nothing
+			}
+		}
+
+		if (n <= A2.size()){
+			return QuickSelect(A2, n);
+		}
+
+		else if (n > unique.size() - A1.size()){
+			return QuickSelect(A1, n - (unique.size() - A1.size()) );
+		else {
+			return pivot;
+		}
+	}
+
+
+	//function that returns a randomly generated integer
+	//that is within the bounds of the min and max
+	public static int randInt(int min, int max) {
+
+    		Random rand = new Random();
+
+    		int randomNum = rand.nextInt((max - min) + 1) + min;
+
+    		return randomNum;
+	}
+

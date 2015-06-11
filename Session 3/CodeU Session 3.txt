@@ -1,0 +1,267 @@
+
+
+CodeU Session 3
+
+
+Exercise 1:
+
+//stores previous words that have been looked up
+HashTable<String, Boolean> data = new HashTable<String, Boolean>();
+
+//thoughts — another good implementation is probably to store all the 
+//words that i go through for wordAt in the hashtable
+
+boolean isInDictionary(String input) {
+	//check to see if the word has been looked up before
+	if (data.get(input)) {
+		return true;
+	}
+
+	else {
+		int i = 0;
+		boolean flag = 1;
+		
+		//keep looping until you see the word or the index is out
+		//of range for the Trivial Dictionary
+		while (flag) {
+			if (TrivialDictionary.wordAt(i).equals(input){
+				data.put(input, true);
+				return true;
+			}
+			
+			i++
+			
+			if (TrivialDictionary.wordAt(i) == NULL){
+				flag = 0;
+			}
+
+		}
+
+		return false;
+	}
+}
+
+
+Exercise 2:
+
+int hasMajority(ArrayList<Integer> input) {
+	//int value that constitutes a majority
+	int majority = (input.size())/2 + 1;
+	
+	//key is input, value is the number of times it has been seen
+	HashTable<Integer, Integer> data = HashTable<Integer, Integer>();
+
+	//go through the list and log the times each int has been seen
+	for (int i = 0 ; i < input.size() ; i++){
+		int val = input.get(i);
+		if (data.get(val) == NULL) {
+			data.input(val, 1);
+		}
+		else {
+			//checks if the number is a majority
+			int count = data.get(val);
+			if (count == majority - 1) {
+				return data.get(val);
+			}			
+			data.input(val, ++count);
+		}
+	}
+
+	return NULL;
+}
+
+Exercise 3:
+
+public class nth {
+
+	ArrayList<Integer> list;
+
+	nth(ArrayList<Integer> input){
+		list = input;
+	}
+
+	int nthLargest(int n) {
+		//can’t be 0th largest
+		if (n == 0) {
+			throw new RunTimeException();
+		}
+
+		//remove all the duplicates
+		ArrayList<Integer> unique = new ArrayList<Integer>();
+		HashTable<Integer, Boolean> check = new HashTable<Integer, Boolean>();
+		for (int i = 0 ; i < list.size(); i++) {
+			if (check.get(list.get(i)) == null) {
+				check.put(list.get(i), true);
+				unique.add(list.get(i);
+			}
+		}
+
+		//nth largest, cant be bigger than the size of the list
+		if (n > list.size()) {
+			throw new RunTimeException();
+		}
+
+		//quick select algorithm
+		int answer = quickselect(unique, n);
+
+		return answer;
+	}
+
+	
+	//quickselect algorithm that is based on quicksort
+	int quickselect(ArrayList<Integer> unique, int n) {
+		int r = randInt(1, unique.size());
+		int pivot = unique.get(r);
+		
+		//A1, A2 are new arraylists, where A1 has smaller elements
+		//and A2 has larger elements
+		ArrayList<Integer> A1 = new ArrayList<Integer>();
+		ArrayList<Integer> A2 = new ArrayList<Integer>();
+
+		for (int i = 0 ; i < unique.size(); i++) {
+			if (unique.get(i) < pivot) {
+				A1.add(unique.get(i);
+			}
+			
+			else if (unique.get(i) > pivot) {
+				A2.add(unique.get(i);
+			}
+			else {
+				//do nothing
+			}
+		}
+
+		if (n <= A2.size()){
+			return QuickSelect(A2, n);
+		}
+
+		else if (n > unique.size() - A1.size()){
+			return QuickSelect(A1, n - (unique.size() - A1.size()) );
+		else {
+			return pivot;
+		}
+	}
+
+
+	//function that returns a randomly generated integer
+	//that is within the bounds of the min and max
+	public static int randInt(int min, int max) {
+
+    		Random rand = new Random();
+
+    		int randomNum = rand.nextInt((max - min) + 1) + min;
+
+    		return randomNum;
+	}
+
+
+
+Exercise 4:
+
+public class Query {
+	String timestamp;
+	String word;
+	//other fields
+	
+	Query(String t, String w) {
+		timestamp = t;
+		word = w;
+
+	}
+}
+
+public class QueryStream implements Iterable<Query>{
+
+	ArrayList<Query> queryList;
+
+	public QueryStream() {
+	
+	}
+
+//i dont think i am writing this iterator correctly — CHECK!
+
+	public Iterator<Query> iterator() {
+		Iterator<Query> it = new Iterator<Query>(){
+
+		private int queryListIndex = 0;
+		private int queryIndex = 0;
+		private String[] wordList;
+
+		//returns true if the queryList still has something in it
+		//from the index to the end
+		//this is implemented because some queries can be empty
+		public boolean sizeCheck(int i) {
+			for (i ; i < queryList.size(); i++){
+				if (queryList.get(i).word.length() > 0){
+					return true;
+				}
+			}
+			return false;
+		}
+
+		
+		public boolean hasNext() {
+			//checks if there is another word for next to return
+			if (queryListIndex == 0) {
+				if (queryList > 0) {
+					if (sizeCheck(queryListIndex)){
+						return true;
+					}
+				}
+				return false;
+			}
+					
+
+			//still a word next within the query
+			if (queryIndex < wordList.length) {
+				return true;
+			}
+			
+			//checks to see if there is any queries left
+			//that have stuff in it
+			else {
+				if (queryListIndex < queryList.size()){
+					if (sizeCheck(queryListIndex)) {
+						return true;
+					}
+				}
+			}
+
+			return false;
+		}
+
+		public String next() {
+			//split the query by whitespace and put it into
+			//wordlist
+			if (queryListIndex == 0){
+				wordList = queryList.get(queryListIndex).word.split(“\\s+”);
+				queryListIndex++;
+			}
+
+			//there are still words within the query
+			if (queryIndex < wordList.size()) {
+				return wordList[queryIndex++];
+			
+			//else it splits the next query word
+			//potential problem - if the query is empty? 
+			// - i actually think it might be ok
+			else {
+				if (queryListIndex < queryList.size()) {
+					wordList = queryList.get(queryListIndex).word.split(“\\s+”);
+					queryListIndex++;
+					queryIndex = 0;
+				}
+				
+				
+				return “<NEWQUERY>”;
+			
+			}
+
+			return NULL;
+
+		}
+	}
+	
+	
+
+

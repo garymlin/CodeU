@@ -1,0 +1,111 @@
+CodeU Session 3
+
+Exercise 4:
+
+public class Query {
+	String timestamp;
+	String word;
+	//other fields
+	
+	Query(String t, String w) {
+		timestamp = t;
+		word = w;
+
+	}
+}
+
+public class QueryStream implements Iterable<Query>{
+
+	ArrayList<Query> queryList;
+
+	public QueryStream() {
+	
+	}
+
+//i dont think i am writing this iterator correctly — CHECK!
+
+	public Iterator<Query> iterator() {
+		Iterator<Query> it = new Iterator<Query>(){
+
+		private int queryListIndex = 0;
+		private int queryIndex = 0;
+		private String[] wordList;
+
+		//returns true if the queryList still has something in it
+		//from the index to the end
+		//this is implemented because some queries can be empty
+		public boolean sizeCheck(int i) {
+			for (i ; i < queryList.size(); i++){
+				if (queryList.get(i).word.length() > 0){
+					return true;
+				}
+			}
+			return false;
+		}
+
+		
+		public boolean hasNext() {
+			//checks if there is another word for next to return
+			if (queryListIndex == 0) {
+				if (queryList > 0) {
+					if (sizeCheck(queryListIndex)){
+						return true;
+					}
+				}
+				return false;
+			}
+					
+
+			//still a word next within the query
+			if (queryIndex < wordList.length) {
+				return true;
+			}
+			
+			//checks to see if there is any queries left
+			//that have stuff in it
+			else {
+				if (queryListIndex < queryList.size()){
+					if (sizeCheck(queryListIndex)) {
+						return true;
+					}
+				}
+			}
+
+			return false;
+		}
+
+		public String next() {
+			//split the query by whitespace and put it into
+			//wordlist
+			if (queryListIndex == 0){
+				wordList = queryList.get(queryListIndex).word.split(“\\s+”);
+				queryListIndex++;
+			}
+
+			//there are still words within the query
+			if (queryIndex < wordList.size()) {
+				return wordList[queryIndex++];
+			
+			//else it splits the next query word
+			//potential problem - if the query is empty? 
+			// - i actually think it might be ok
+			else {
+				if (queryListIndex < queryList.size()) {
+					wordList = queryList.get(queryListIndex).word.split(“\\s+”);
+					queryListIndex++;
+					queryIndex = 0;
+				}
+				
+				
+				return “<NEWQUERY>”;
+			
+			}
+
+			return NULL;
+
+		}
+	}
+	
+	
+
+
