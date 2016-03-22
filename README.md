@@ -1,3 +1,3 @@
-# CodeU
+# Google's CodeU 2015
 
-#testing
+## These are coding interview practice problems given to students participating in CodeU to complete.
